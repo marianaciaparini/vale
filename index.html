@@ -840,16 +840,38 @@ async function gsBuscar(){
   if(d.erro) throw new Error(d.erro);
   return d;
 }
+const espera=ms=>new Promise(r=>setTimeout(r,ms));
+async function gsConfere(payload){
+  try{ const d=await gsBuscar(); return d.payload===payload; }catch(e){ return false; }
+}
 async function gsGravar(){
-  const corpo=JSON.stringify({senha:GS_SENHA, payload:JSON.stringify(E)});
+  const payload=JSON.stringify(E);
+  const corpo=JSON.stringify({senha:GS_SENHA, payload});
+  const opcoes={method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:corpo};
+  let ok=false;
   try{
-    const r=await fetch(GS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:corpo});
+    const r=await fetch(GS_URL,opcoes);
     const d=await r.json();
     if(d.erro) throw new Error(d.erro);
-    gsUltimo=JSON.stringify(E);
+    ok=true;
+  }catch(e){
+    // O Apps Script costuma gravar e responder de outro endereço, que o
+    // navegador bloqueia. Em vez de confiar na resposta, lemos de volta.
+    await espera(1200);
+    ok=await gsConfere(payload);
+    if(!ok){
+      try{ await fetch(GS_URL,Object.assign({},opcoes,{mode:'no-cors'})); }catch(e2){}
+      await espera(1500);
+      ok=await gsConfere(payload);
+    }
+  }
+  if(ok){
+    gsUltimo=payload;
     syncMsg='saved';
     setTimeout(()=>{ if(syncMsg==='saved'){ syncMsg=''; marcaSync(); } },1800);
-  }catch(e){ syncMsg='could not save'; }
+  }else{
+    syncMsg='could not save';
+  }
   marcaSync();
 }
 async function gsConferir(){
