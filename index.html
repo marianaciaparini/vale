@@ -794,14 +794,20 @@ const TIPS=[["Pumpkin Puffs", "Widely considered the easiest dish for profit —
 const CHAVE='my-valley-ddv-en-1';
 let E={areas:{},pers:{}};
 
-function carregar(){
-  try{ const b=localStorage.getItem(CHAVE); if(b) E=JSON.parse(b); }catch(e){}
+/* completar() so preenche o que falta no objeto que ja esta em E.
+   carregar() e' quem le o aparelho — nunca chame carregar() depois de
+   trocar E por um backup, senao o estado antigo volta por cima. */
+function completar(){
   if(!E.areas) E.areas={}; if(!E.pers) E.pers={}; if(!E.ui) E.ui={};
   AREAS.forEach(g=>g.itens.forEach(a=>{
     const k=g.g+'|'+a.n;
     if(E.areas[k]===undefined) E.areas[k]=a.on;
   }));
   CHARS.forEach(c=>{ if(!E.pers[c.id]) E.pers[c.id]={on:c.on,lvl:c.lvl,fn:'—',q:{}}; });
+}
+function carregar(){
+  try{ const b=localStorage.getItem(CHAVE); if(b) E=JSON.parse(b); }catch(e){}
+  completar();
 }
 let DBREF=null, tSalvar=null, syncMsg='', ultimoPayload=null;
 function marcaSync(){
@@ -842,7 +848,7 @@ async function salvarRemoto(){
     if(d && typeof d.payload === 'string'){
       ultimoPayload = d.payload;
       const remoto = JSON.parse(d.payload);
-      if(remoto && remoto.pers){ E = remoto; carregar(); verTudo(); }
+      if(remoto && remoto.pers){ E = remoto; completar(); verTudo(); }
     }else{
       await salvarRemoto();
     }
@@ -857,7 +863,7 @@ async function salvarRemoto(){
       let remoto; try{ remoto=JSON.parse(d.payload); }catch(e){ return; }
       if(!remoto || !remoto.pers) return;
       ultimoPayload=d.payload;
-      E=remoto; carregar(); verTudo();
+      E=remoto; completar(); verTudo();
       syncMsg='updated from your other device'; marcaSync();
       setTimeout(()=>{ if(syncMsg.indexOf('updated')===0){ syncMsg=''; marcaSync(); } },2500);
     }, e=>{ syncMsg='sync interrupted'; marcaSync(); });
@@ -942,7 +948,7 @@ async function gsConferir(){
     if(!d.payload || d.payload===gsUltimo) return;
     const remoto=JSON.parse(d.payload);
     if(!remoto || !remoto.pers) return;
-    gsUltimo=d.payload; E=remoto; carregar(); verTudo();
+    gsUltimo=d.payload; E=remoto; completar(); verTudo();
     syncMsg='updated from your other device'; marcaSync();
     setTimeout(()=>{ if(syncMsg.indexOf('updated')===0){ syncMsg=''; marcaSync(); } },2500);
   }catch(e){}
@@ -965,12 +971,12 @@ async function gsIniciar(){
             'Spreadsheet: '+la+' marks\nThis device: '+aqui+' marks\n\n'+
             'OK = use the spreadsheet and lose what is on this device.\n'+
             'Cancel = keep this device and write it over the spreadsheet.');
-          if(usarPlanilha){ E=remoto; carregar(); }
+          if(usarPlanilha){ E=remoto; completar(); }
           else { gsAtivo=true; verTudo(); await gsGravar(); primeiraLigacao=false;
                  clearInterval(gsTimer); gsTimer=setInterval(gsConferir,20000); return; }
         }else{
           guardaResgate();
-          E=remoto; carregar();
+          E=remoto; completar();
         }
       }
     }
@@ -1350,7 +1356,7 @@ function verProg(){
       const t=localStorage.getItem('my-valley-resgate');
       if(!t) return;
       if(!confirm('Bring back what was on this device just before the last sync?')) return;
-      E=JSON.parse(t); carregar(); salvar(); verTudo();
+      E=JSON.parse(t); completar(); salvar(); verTudo();
       alert('Restored. It has also been written back to the spreadsheet.');
     }catch(e){ alert('Could not restore.'); }
   };
@@ -1378,7 +1384,7 @@ function verProg(){
     catch(e){ alert('That text is not a valid backup. Make sure you pasted all of it, from the first { to the last }.'); return; }
     if(!novo || !novo.pers){ alert('That text does not look like a My Valley backup.'); return; }
     guardaResgate();
-    E=novo; carregar(); salvar(); verTudo();
+    E=novo; completar(); salvar(); verTudo();
     area.classList.add('oculto');
     alert('Restored: '+riqueza(E)+' marks are back.');
   };
