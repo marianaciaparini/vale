@@ -77,6 +77,9 @@ h2.secao .conta{margin-left:auto;font-size:11px;color:var(--texto-fraco);
 .busca{width:100%;padding:11px 14px;border-radius:20px;font:inherit;font-size:14px;
   background:rgba(0,0,0,.3);border:1.5px solid rgba(143,156,232,.45);color:var(--texto)}
 .busca::placeholder{color:#7e88bd}
+textarea.caixa-texto{width:100%;height:130px;border-radius:12px;padding:10px 12px;
+  background:rgba(0,0,0,.35);border:1.5px solid rgba(143,156,232,.45);color:var(--texto);
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;line-height:1.4;resize:vertical}
 .controles #soLiberados{width:100%;padding:10px;font-size:13px;margin-bottom:9px}
 .p{border:2px solid rgba(143,156,232,.55);border-radius:var(--r);
   background:linear-gradient(160deg,var(--painel-2),var(--painel));margin-bottom:8px;overflow:hidden}
@@ -870,8 +873,25 @@ const coin=n=>n?n.toLocaleString('en-US'):null;
 /* ---------- planilha do Google (usada fora do Claude) ---------- */
 const GS_URL='https://script.google.com/macros/s/AKfycbxw4auON2fGhLS-XSQhmQGxGpVEO9zk6apuejsXfsX83SM4_OSMdCdz9ow-5-PEfpRk/exec';
 const GS_KEY='my-valley-gs-senha';
-let GS_SENHA=null, gsUltimo=null, gsTimer=null, gsAtivo=false;
+let GS_SENHA=null, gsUltimo=null, gsTimer=null, gsAtivo=false, primeiraLigacao=true;
 
+function riqueza(est){
+  let n=0;
+  try{
+    Object.keys(est.pers||{}).forEach(k=>{
+      const x=est.pers[k]||{};
+      if(x.on) n++;
+      if(x.fn && x.fn!=='\u2014') n++;
+      n += Object.keys(x.q||{}).length;
+      n += (x.lvl||0);
+    });
+    n += Object.values(est.areas||{}).filter(Boolean).length;
+  }catch(e){}
+  return n;
+}
+function guardaResgate(){
+  try{ localStorage.setItem('my-valley-resgate', JSON.stringify(E)); }catch(e){}
+}
 function gsLerSenha(){ try{ return localStorage.getItem(GS_KEY); }catch(e){ return null; } }
 function gsSalvarSenha(s){ try{ localStorage.setItem(GS_KEY,s); }catch(e){} }
 
@@ -936,8 +956,25 @@ async function gsIniciar(){
     if(d.payload){
       gsUltimo=d.payload;
       const remoto=JSON.parse(d.payload);
-      if(remoto && remoto.pers){ E=remoto; carregar(); }
+      if(remoto && remoto.pers){
+        const aqui=riqueza(E), la=riqueza(remoto);
+        if(primeiraLigacao && la < aqui){
+          guardaResgate();
+          const usarPlanilha = confirm(
+            'The spreadsheet looks emptier than this device.\n\n'+
+            'Spreadsheet: '+la+' marks\nThis device: '+aqui+' marks\n\n'+
+            'OK = use the spreadsheet and lose what is on this device.\n'+
+            'Cancel = keep this device and write it over the spreadsheet.');
+          if(usarPlanilha){ E=remoto; carregar(); }
+          else { gsAtivo=true; verTudo(); await gsGravar(); primeiraLigacao=false;
+                 clearInterval(gsTimer); gsTimer=setInterval(gsConferir,20000); return; }
+        }else{
+          guardaResgate();
+          E=remoto; carregar();
+        }
+      }
     }
+    primeiraLigacao=false;
     gsAtivo=true;
     verTudo();
     if(!d.payload) gsGravar();
@@ -1291,6 +1328,14 @@ function verProg(){
     <div class="linha">
       <button class="botao cheio" id="exportar">Copy backup</button>
       <button class="botao" id="importar">Paste backup</button>
+      ${(function(){ try{ return localStorage.getItem('my-valley-resgate') ? '<button class="botao" id="resgatar">Undo the last sync</button>' : ''; }catch(e){ return ''; } })()}
+    </div>
+    <div id="areaBackup" class="oculto">
+      <textarea class="caixa-texto" id="txtBackup" placeholder="Paste the backup text here" spellcheck="false"></textarea>
+      <div class="linha" style="margin-top:8px">
+        <button class="botao cheio" id="restaurar">Restore from this text</button>
+        <button class="botao" id="fecharBackup">Close</button>
+      </div>
     </div>
     <p class="nota">${DBREF ? 'Your ticks are saved on the server for this artifact. They survive a reload, and any device signed in with the same account updates live \u2014 no refresh needed. The backup below is still a good safety net.' : 'Saving to the server is unavailable in this view, so your ticks live only in this browser and may be lost. Copy the backup and keep it somewhere.'}</p>
   </div>
@@ -1299,18 +1344,43 @@ function verProg(){
     <p class="nota">Friendship quests come from the Dreamlight Valley Wiki. Fish and recipes from Dexerto's DDV wiki; seeds and crops from Destructoid, CharlieIntel and ScreenRant. Pulled September 2026.<br><br>
     The fish list is complete. Seeds cover the base game plus Storybook Vale. Food recipes now cover everything the community has documented, including every expansion and seasonal dish. Sell price and energy are filled in for the base-game and expansion dishes; the newer ones carry ingredients and star rating only. Base-game figures come from Nintendo Life's recipe list. Gift pools, ingredient spots, ores, gems and critters come from the Dreamlight Valley Wiki, GameSpot, Prima Games, Destructoid and TheGamer. Critter schedules are known for squirrels, rabbits, raccoons and sunbirds; the newer expansion critters are listed by biome only. Gift pools only exist for 27 characters so far — the wiki page is still a stub. Crafting covers every refined material, every potion and training manual, the fences and paving, and the functional items. Decorative furniture blueprints — several hundred of them — are still not in here.</p>
   </div>`;
+  const rg=document.getElementById('resgatar');
+  if(rg) rg.onclick=()=>{
+    try{
+      const t=localStorage.getItem('my-valley-resgate');
+      if(!t) return;
+      if(!confirm('Bring back what was on this device just before the last sync?')) return;
+      E=JSON.parse(t); carregar(); salvar(); verTudo();
+      alert('Restored. It has also been written back to the spreadsheet.');
+    }catch(e){ alert('Could not restore.'); }
+  };
   const gsb=document.getElementById('gsBtn');
   if(gsb) gsb.onclick=gsConectar;
+  const area=document.getElementById('areaBackup');
+  const txt=document.getElementById('txtBackup');
+  document.getElementById('fecharBackup').onclick=()=>area.classList.add('oculto');
   document.getElementById('exportar').onclick=async()=>{
     const t=JSON.stringify(E);
-    try{ await navigator.clipboard.writeText(t); alert('Backup copied.'); }
-    catch(e){ prompt('Copy this text:',t); }
+    txt.value=t; area.classList.remove('oculto');
+    try{ await navigator.clipboard.writeText(t); alert('Backup copied. It is also in the box below, in case you want to keep it somewhere.'); }
+    catch(e){ txt.select(); alert('Could not reach the clipboard. Select the text in the box below and copy it by hand.'); }
   };
   document.getElementById('importar').onclick=()=>{
-    const t=prompt('Paste your backup:');
-    if(!t) return;
-    try{ E=JSON.parse(t); carregar(); salvar(); verTudo(); alert('Backup restored.'); }
-    catch(e){ alert('That text is not a valid backup.'); }
+    txt.value=''; area.classList.remove('oculto');
+    txt.focus();
+    area.scrollIntoView({block:'center'});
+  };
+  document.getElementById('restaurar').onclick=()=>{
+    const t=(txt.value||'').trim();
+    if(!t){ alert('The box is empty. Paste the backup text first.'); return; }
+    let novo;
+    try{ novo=JSON.parse(t); }
+    catch(e){ alert('That text is not a valid backup. Make sure you pasted all of it, from the first { to the last }.'); return; }
+    if(!novo || !novo.pers){ alert('That text does not look like a My Valley backup.'); return; }
+    guardaResgate();
+    E=novo; carregar(); salvar(); verTudo();
+    area.classList.add('oculto');
+    alert('Restored: '+riqueza(E)+' marks are back.');
   };
 }
 
