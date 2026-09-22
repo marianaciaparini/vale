@@ -911,7 +911,8 @@ const coin=n=>n?n.toLocaleString('en-US'):null;
 /* ---------- planilha do Google (usada fora do Claude) ---------- */
 const GS_URL='https://script.google.com/macros/s/AKfycbxw4auON2fGhLS-XSQhmQGxGpVEO9zk6apuejsXfsX83SM4_OSMdCdz9ow-5-PEfpRk/exec';
 const GS_KEY='my-valley-gs-senha';
-let GS_SENHA=null, gsUltimo=null, gsTimer=null, gsAtivo=false, primeiraLigacao=true;
+let gsGravando=false;
+let GS_SENHA=null, gsUltimo=null, gsTimer=null, gsAtivo=false, primeiraLigacao=true, gsQuando=null;
 
 function riqueza(est){
   let n=0;
@@ -943,9 +944,10 @@ const espera=ms=>new Promise(r=>setTimeout(r,ms));
 async function gsConfere(payload){
   try{ const d=await gsBuscar(); return d.payload===payload; }catch(e){ return false; }
 }
-async function gsGravar(){
+async function gsGravar(forcar){
+  gsGravando=true;
   const payload=JSON.stringify(E);
-  const corpo=JSON.stringify({senha:GS_SENHA, payload});
+  const corpo=JSON.stringify({senha:GS_SENHA, payload, forcar:!!forcar});
   const opcoes={method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:corpo};
   let ok=false;
   try{
@@ -965,13 +967,16 @@ async function gsGravar(){
     }
   }
   if(ok){
-    gsUltimo=payload;
+    gsUltimo=payload; gsQuando=new Date();
+    const q=document.getElementById('gsQuando'); if(q) q.textContent='Last saved '+gsQuando.toLocaleString();
     syncMsg='saved';
     setTimeout(()=>{ if(syncMsg==='saved'){ syncMsg=''; marcaSync(); } },1800);
   }else{
     syncMsg='could not save';
   }
+  gsGravando=false;
   marcaSync();
+  return ok;
 }
 async function gsConferir(){
   if(tSalvar) return;
@@ -1377,7 +1382,11 @@ function verProg(){
   ${DBREF ? '' : `<div class="caixa">
     <h2 class="secao" style="margin:0 0 8px">Spreadsheet sync</h2>
     ${gsAtivo
-      ? '<p class="nota">Connected. Every tick is written to your Google spreadsheet, and this page checks for changes from your other devices every 20 seconds.</p>'
+      ? `<p class="nota">Connected. Every tick is written to your Google spreadsheet, and this page checks for changes from your other devices every 20 seconds.</p>
+         <div class="linha" style="margin-top:10px">
+           <button class="botao cheio" id="gsForcar">Save to spreadsheet now</button>
+           <span class="nota" id="gsQuando">${gsQuando ? 'Last saved '+gsQuando.toLocaleString() : ''}</span>
+         </div>`
       : `<div class="linha"><button class="botao cheio" id="gsBtn">Connect to my spreadsheet</button></div>
          <p class="nota">Without this, your ticks live only in this browser. Connecting stores them in your own Google spreadsheet so phone and computer stay in step. You will be asked once for the password you set in the script.</p>`}
   </div>`}
@@ -1411,6 +1420,15 @@ function verProg(){
       E=JSON.parse(t); completar(); salvar(); verTudo();
       alert('Restored. It has also been written back to the spreadsheet.');
     }catch(e){ alert('Could not restore.'); }
+  };
+  const gsf=document.getElementById('gsForcar');
+  if(gsf) gsf.onclick=async()=>{
+    if(gsGravando) return;
+    clearTimeout(tSalvar); tSalvar=null;
+    gsf.disabled=true; gsf.textContent='Saving\u2026';
+    const ok=await gsGravar(true);
+    gsf.disabled=false; gsf.textContent='Save to spreadsheet now';
+    alert(ok ? 'Saved to your spreadsheet, with a restore point in the history tab.' : 'Could not reach the spreadsheet. Your ticks are still on this device \u2014 try again in a moment.');
   };
   const gsb=document.getElementById('gsBtn');
   if(gsb) gsb.onclick=gsConectar;
