@@ -150,6 +150,7 @@ select{font:inherit;font-size:12.5px;padding:6px 10px;border-radius:20px;
 .tag.gift{background:rgba(236,79,146,.22);color:#ffbdd7}
 .tag.flower{background:rgba(255,160,200,.18);color:#ffc6e0}
 .tag.material{background:rgba(190,160,120,.22);color:#f0dcbf}
+.tag.shop{background:rgba(243,201,106,.18);color:#ffe3a3}
 .tag.gem{background:rgba(167,178,240,.25);color:#d5dbff}
 .tag.critter{background:rgba(95,208,138,.18);color:#b5f2cf}
 .tag.craft{background:rgba(255,255,255,.14);color:#e6e3ff}
@@ -389,67 +390,7 @@ function ordenar(l){
 }
 
 /* FISH: [name, where, ripple, gold, energy, dlc] */
-const FISH=[
-["Anglerfish","Forgotten Lands","Gold",1500,2000,0],
-["Bass","Peaceful Meadow · Forest of Valor · Sunlit Plateau · Frosted Heights · The Oasis · Wild Tangle","White / open water",25,150,0],
-["Bream","Peaceful Meadow","Blue",280,1300,0],
-["Brilliant Blue Starfish","The Oasis","Gold",875,1650,1],
-["Carp","Forest of Valor · Sunlit Plateau","Blue / White",400,800,0],
-["Catfish","Peaceful Meadow","Gold",550,1200,0],
-["Cod","Dazzle Beach · Forgotten Lands · Glade of Trust · The Docks · The Overlook · Everafter · Glamour Gulch","White / open water",35,150,0],
-["Crab","Frosted Heights · Wishing Alps","Blue / White",600,1200,0],
-["Dunebopper","The Oasis","Blue",550,1100,1],
-["Electric Eel","The Grasslands · The Promenade","Gold",1025,1550,1],
-["Festive Anglerfish","Forgotten Lands, Festive event only","Red and Green",0,2000,0],
-["Festive Bass","Peaceful Meadow, Festive event only","Red and Green",0,150,0],
-["Festive Fugu","Dazzle Beach, Festive event only","Red and Green",0,1700,0],
-["Festive Salmon","Sunlit Plateau, Festive event only","Red and Green",0,500,0],
-["Festive Squid","Glade of Trust, Festive event only","Red and Green",0,1000,0],
-["Flying Fish","Mythopia","None / White",60,150,1],
-["Fugu","Dazzle Beach — only while raining","Gold",900,1700,0],
-["Here and There Fish","Any Valley biome, 6–10am and 6–10pm","None / White",2000,1000,0],
-["Herring","Dazzle Beach · Glade of Trust","White",65,250,0],
-["Hippocampus","Mythopia","White / Blue",800,500,1],
-["Jellied Fish","Glamour Gulch","Gold",1000,1500,1],
-["Kingfish","Dazzle Beach, 6pm–5am","Blue",450,800,0],
-["Koi","The Bind","None",50,150,1],
-["Lamprey","Everafter","Gold",1500,1800,1],
-["Lancetfish","Forgotten Lands","Blue / White",650,1300,0],
-["Lobster","Glade of Trust","Gold",950,1600,0],
-["Measuring-Tape Snail","Glamour Gulch","White",100,400,1],
-["Mountain Whitefish","Wishing Alps","White / open water",30,150,1],
-["Mussel","Mythopia","None",75,150,1],
-["Octopus","The Docks · The Overlook","Blue / White",290,700,1],
-["Perch","Forest of Valor · Sunlit Plateau · The Grove · The Lagoon","Blue / White",80,400,0],
-["Pike","Forest of Valor","Gold",800,1500,0],
-["Piranha","The Lagoon","Gold",1300,1900,1],
-["Pirarucu","The Grasslands · The Promenade · The Grove · The Lagoon","Blue",625,1250,1],
-["Pretty Pink Starfish","The Oasis","Gold",1300,1500,1],
-["Prisma Shrimp","The Grove","Gold",1100,1600,1],
-["Rainbow Trout","Peaceful Meadow · Forest of Valor · Everafter","White",50,300,0],
-["Red Alpine Bass","Wishing Alps","Gold",750,1250,1],
-["Robot Fish","The Docks · The Overlook","Gold",625,1350,1],
-["Salmon","Frosted Heights · Sunlit Plateau · The Grasslands · The Promenade","White / Blue",150,500,0],
-["Sand Fish","The Plains · The Wastes · The Borderlands","None / White",30,150,1],
-["Sand Worm","The Plains · The Wastes · The Borderlands","Gold",800,1650,1],
-["Satin-Finned Betta","Glamour Gulch","Blue",450,950,1],
-["Scorpion","The Plains · The Wastes · The Borderlands","Pink, in the sand",425,900,1],
-["Sea Snail","The Docks · The Overlook","Blue / White",250,800,1],
-["Sea Wolf","The Bind","White / Blue",75,300,1],
-["Shad","The Docks · The Overlook","White",60,300,1],
-["Shrimp","Dazzle Beach","Blue / White",300,750,0],
-["Skeleton Fish","The Plains · The Wastes · The Borderlands","White / Blue",100,500,1],
-["Sole","Forgotten Lands · The Docks · The Overlook","White / Blue",200,500,0],
-["Sorcerer Hat Hermit Crab","The Bind","Gold",800,1500,1],
-["Squid","Glade of Trust · Forgotten Lands · Mythopia","Blue / White",500,1000,0],
-["Stygian Mudskipper","Mythopia","Gold",1500,1800,1],
-["Swordfish","Dazzle Beach","Gold",700,1500,0],
-["Tigger Fish","Pixie Acres","Gold",1600,1600,1],
-["Tilapia","Sunlit Plateau · Frosted Heights · Pixie Acres","Blue / White",600,1150,0],
-["Tuna","Forgotten Lands · Glade of Trust · The Bind · Wishing Alps","White / Blue",95,350,0],
-["Walleye","Sunlit Plateau","Gold",1100,1700,0],
-["White Sturgeon","Frosted Heights","Gold",1250,1800,0]
-];
+const FISH=[["Anglerfish", "Forgotten Lands", "Gold", 1500, 2000, 0], ["Bass", "Peaceful Meadow · Forest of Valor · Sunlit Plateau · Frosted Heights · The Oasis · Wild Tangle", "White / open water", 25, 150, 0], ["Bream", "Peaceful Meadow", "Blue", 280, 1300, 0], ["Brilliant Blue Starfish", "The Oasis", "Gold", 875, 1650, 1], ["Carp", "Forest of Valor · Sunlit Plateau", "Blue / White", 400, 800, 0], ["Catfish", "Peaceful Meadow", "Gold", 550, 1200, 0], ["Cod", "Dazzle Beach · Forgotten Lands · Glade of Trust · The Docks · The Overlook · Everafter · Glamour Gulch", "White / open water", 35, 150, 0], ["Crab", "Frosted Heights · Wishing Alps", "Blue / White", 600, 1200, 0], ["Dunebopper", "The Oasis", "Blue", 550, 1100, 1], ["Electric Eel", "The Grasslands · The Promenade", "Gold", 1025, 1550, 1], ["Festive Anglerfish", "Forgotten Lands, Festive event only", "Red and Green", 0, 2000, 0], ["Festive Bass", "Peaceful Meadow, Festive event only", "Red and Green", 0, 150, 0], ["Festive Fugu", "Dazzle Beach, Festive event only", "Red and Green", 0, 1700, 0], ["Festive Salmon", "Sunlit Plateau, Festive event only", "Red and Green", 0, 500, 0], ["Festive Squid", "Glade of Trust, Festive event only", "Red and Green", 0, 1000, 0], ["Flying Fish", "Mythopia", "None / White", 60, 150, 1], ["Fugu", "Dazzle Beach — only while raining", "Gold", 900, 1700, 0], ["Here and There Fish", "Any Valley biome, 6–10am and 6–10pm", "None / White", 2000, 1000, 0], ["Herring", "Dazzle Beach · Glade of Trust", "White", 65, 250, 0], ["Hippocampus", "Mythopia", "White / Blue", 800, 500, 1], ["Jellied Fish", "Glamour Gulch", "Gold", 1000, 1500, 1], ["Kingfish", "Dazzle Beach, 6pm–5am", "Blue", 450, 800, 0], ["Koi", "The Bind", "None", 50, 150, 1], ["Lamprey", "Everafter", "Gold", 1500, 1800, 1], ["Lancetfish", "Forgotten Lands", "Blue / White", 650, 1300, 0], ["Lobster", "Glade of Trust", "Gold", 950, 1600, 0], ["Measuring-Tape Snail", "Glamour Gulch", "White", 100, 400, 1], ["Mountain Whitefish", "Wishing Alps", "White / open water", 30, 150, 1], ["Mussel", "Mythopia", "None", 75, 150, 1], ["Octopus", "The Docks · The Overlook", "Blue / White", 290, 700, 1], ["Perch", "Forest of Valor · Sunlit Plateau · The Grove · The Lagoon", "Blue / White", 80, 400, 0], ["Pike", "Forest of Valor", "Gold", 800, 1500, 0], ["Piranha", "The Lagoon", "Gold", 1300, 1900, 1], ["Pirarucu", "The Grasslands · The Promenade · The Grove · The Lagoon", "Blue", 625, 1250, 1], ["Pretty Pink Starfish", "The Oasis", "Gold", 1300, 1500, 1], ["Prisma Shrimp", "The Grove", "Gold", 1100, 1600, 1], ["Rainbow Trout", "Peaceful Meadow · Forest of Valor · Everafter", "White", 50, 300, 0], ["Red Alpine Bass", "Wishing Alps", "Gold", 750, 1250, 1], ["Robot Fish", "The Docks · The Overlook", "Gold", 625, 1350, 1], ["Salmon", "Frosted Heights · Sunlit Plateau · The Grasslands · The Promenade", "White / Blue", 150, 500, 0], ["Sand Fish", "The Plains · The Wastes · The Borderlands", "None / White", 30, 150, 1], ["Sand Worm", "The Plains · The Wastes · The Borderlands", "Gold", 800, 1650, 1], ["Satin-Finned Betta", "Glamour Gulch", "Blue", 450, 950, 1], ["Scorpion", "The Plains · The Wastes · The Borderlands", "Pink, in the sand", 425, 900, 1], ["Sea Snail", "The Docks · The Overlook", "Blue / White", 250, 800, 1], ["Sea Wolf", "The Bind", "White / Blue", 75, 300, 1], ["Shad", "The Docks · The Overlook", "White", 60, 300, 1], ["Shrimp", "Dazzle Beach", "Blue / White", 300, 750, 0], ["Skeleton Fish", "The Plains · The Wastes · The Borderlands", "White / Blue", 100, 500, 1], ["Sole", "Forgotten Lands · The Docks · The Overlook", "White / Blue", 200, 500, 0], ["Sorcerer Hat Hermit Crab", "The Bind", "Gold", 800, 1500, 1], ["Squid", "Glade of Trust · Forgotten Lands · Mythopia", "Blue / White", 500, 1000, 0], ["Stygian Mudskipper", "Mythopia", "Gold", 1500, 1800, 1], ["Swordfish", "Dazzle Beach", "Gold", 700, 1500, 0], ["Tigger Fish", "Pixie Acres", "Gold", 1600, 1600, 1], ["Tilapia", "Sunlit Plateau · Frosted Heights · Pixie Acres", "Blue / White", 600, 1150, 0], ["Tuna", "Forgotten Lands · Glade of Trust · The Bind · Wishing Alps", "White / Blue", 95, 350, 0], ["Walleye", "Sunlit Plateau", "Gold", 1100, 1700, 0], ["White Sturgeon", "Frosted Heights", "Gold", 1250, 1800, 0], ["Plush Fish", "Honeyglow Woods", "Gold", 900, 1500, 1], ["Balloon Fish", "Wishblossom Mountains — Pixie Acres", "", 0, 0, 1]];
 
 /* CROPS: [name, kind, where, seedCost, growTime, yield, sell, energy] */
 const CROPS=[
@@ -749,7 +690,7 @@ const RECIPES_BASE=[
 ];
 
 /* Foraged ingredients: [name, category, where, sell, energy] */
-const ITEMS=[["Basil", "Spice & herb", "Peaceful Meadow — foraged, 10 at a time", 25, 100], ["Oregano", "Spice & herb", "Plaza — foraged, 10 at a time", 20, 95], ["Garlic", "Spice & herb", "Forest of Valor — foraged, 10 at a time", 60, 135], ["Ginger", "Spice & herb", "Forgotten Lands — foraged, 10 at a time", 100, 175], ["Mint", "Spice & herb", "Frosted Heights — foraged, 10 at a time", 80, 155], ["Mushroom", "Spice & herb", "Glade of Trust — foraged, 10 at a time", 30, 105], ["Vanilla", "Spice & herb", "Sunlit Plateau — foraged", 60, 135], ["Chrysanthemum Tea Leaves", "Spice & herb", "Mulan's Stall — 3 free per day", 25, 25], ["Jasmine Tea Leaves", "Spice & herb", "Mulan's Stall — 3 free per day", 25, 25], ["Oolong Tea Leaves", "Spice & herb", "Mulan's Stall — 3 free per day", 25, 25], ["Agave", "Spice & herb", "Eternity Isle — The Plains, The Wastes, The Oasis, The Borderlands", 0, 0], ["Cinnamon", "Spice & herb", "Eternity Isle — Wild Tangle (Grasslands, Promenade, Grove, Lagoon)", 0, 0], ["Cumin", "Spice & herb", "Eternity Isle — Ancient's Landing", 0, 0], ["Majestea", "Spice & herb", "Eternity Isle — The Overlook and The Ruins", 0, 0], ["Paprika", "Spice & herb", "Eternity Isle — Glittering Dunes", 0, 0], ["Ambrosia", "Spice & herb", "Storybook Vale — Mythopia, from Goofy's Stall", 140, 70], ["Black Pepper", "Spice & herb", "Storybook Vale — Mythopia, seed from Goofy's Stall", 70, 83], ["Lightning Spice", "Spice & herb", "Storybook Vale — Mythopia, foraged", 0, 0], ["Nutmeg", "Spice & herb", "Storybook Vale", 0, 0], ["Salt Crystal", "Spice & herb", "Storybook Vale", 0, 0], ["Button Mushroom", "Spice & herb", "Honeyglow Woods / Wishblossom Mountains", 0, 0], ["Dill", "Spice & herb", "Wishblossom Mountains", 0, 0], ["Fairy Sprinkles", "Spice & herb", "Wishblossom Mountains", 0, 0], ["Cocoa Bean", "Sweet", "Glade of Trust — from trees", 0, 0], ["Sugarcane", "Sweet", "Dazzle Beach — grown from seed", 19, 46], ["Blue Marshmallow", "Sweet", "Dreamlight Valley", 0, 0], ["Pink Marshmallow", "Sweet", "Dreamlight Valley", 0, 0], ["Honey Coral", "Sweet", "Storybook Vale", 0, 0], ["Sweet Jelly", "Sweet", "Honeyglow Woods", 0, 0], ["Truffle", "Sweet", "Honeyglow Woods", 0, 0], ["Apple", "Fruit", "Plaza and Forgotten Lands — trees, regrow ~20 min", 25, 0], ["Banana", "Fruit", "Plaza, Peaceful Meadow and Dazzle Beach — trees, ~23 min", 29, 0], ["Blueberry", "Fruit", "Dazzle Beach and Forest of Valor — bushes, ~23 min", 29, 0], ["Cherry", "Fruit", "Frosted Heights and Sunlit Plateau — trees, ~33 min", 42, 0], ["Coconut", "Fruit", "Dazzle Beach — trees, ~30 min", 42, 0], ["Coffee Bean", "Fruit", "Glade of Trust — bushes, ~40 min", 36, 0], ["Cosmic Fig", "Fruit", "Eternity Isle — Ancient's Landing", 0, 0], ["Grapes", "Fruit", "Eternity Isle — Ancient's Landing", 0, 0], ["Melon", "Fruit", "Eternity Isle — Glittering Dunes", 0, 0], ["Pineapple", "Fruit", "Eternity Isle — Wild Tangle", 0, 0], ["Clam", "Seafood", "Dazzle Beach — foraged on the sand", 0, 0], ["Oyster", "Seafood", "Dazzle Beach — foraged on the sand", 0, 0], ["Scallop", "Seafood", "Dazzle Beach — foraged on the sand", 0, 0], ["Seaweed", "Seafood", "Caught while fishing", 0, 0], ["Butter", "Pantry", "Chez Remy's pantry", 0, 0], ["Cheese", "Pantry", "Chez Remy's pantry", 0, 0], ["Egg", "Pantry", "Chez Remy's pantry", 0, 0], ["Milk", "Pantry", "Chez Remy's pantry", 0, 0], ["Peanut", "Pantry", "Chez Remy's pantry — unlocked through Remy's quests", 0, 0], ["Slush Ice", "Pantry", "Chez Remy's pantry — unlocked through Remy's quests", 0, 0], ["Pork", "Protein", "Gaston's Stall — after his level 2 friendship quest", 0, 0], ["Poultry", "Protein", "Gaston's Stall — after his level 2 friendship quest", 500, 0], ["Venison", "Protein", "Gaston's Stall — after his level 2 friendship quest", 0, 0], ["Bamboo", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Cabbage", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Turnip", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Ruby Lentils", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Beans", "Vegetable", "Eternity Isle — Glittering Dunes", 0, 0], ["Broccoli", "Vegetable", "Eternity Isle — Glittering Dunes", 0, 0], ["Flute Root", "Vegetable", "Eternity Isle — Glittering Dunes", 0, 0], ["Celery", "Vegetable", "Eternity Isle — Ancient's Landing", 0, 0], ["Yam", "Vegetable", "Eternity Isle — Ancient's Landing", 0, 0]];
+const ITEMS=[["Basil", "Spice & herb", "Peaceful Meadow — foraged, 10 at a time", 25, 100], ["Oregano", "Spice & herb", "Plaza — foraged, 10 at a time", 20, 95], ["Garlic", "Spice & herb", "Forest of Valor — foraged, 10 at a time", 60, 135], ["Ginger", "Spice & herb", "Forgotten Lands — foraged, 10 at a time", 100, 175], ["Mint", "Spice & herb", "Frosted Heights — foraged, 10 at a time", 80, 155], ["Mushroom", "Spice & herb", "Glade of Trust — foraged, 10 at a time", 30, 105], ["Vanilla", "Spice & herb", "Sunlit Plateau — foraged", 60, 135], ["Chrysanthemum Tea Leaves", "Spice & herb", "Mulan's Stall — 3 free per day", 25, 25], ["Jasmine Tea Leaves", "Spice & herb", "Mulan's Stall — 3 free per day", 25, 25], ["Oolong Tea Leaves", "Spice & herb", "Mulan's Stall — 3 free per day", 25, 25], ["Agave", "Spice & herb", "Eternity Isle — The Plains, The Wastes, The Oasis, The Borderlands", 0, 0], ["Cinnamon", "Spice & herb", "Eternity Isle — Wild Tangle (Grasslands, Promenade, Grove, Lagoon)", 0, 0], ["Cumin", "Spice & herb", "Eternity Isle — Ancient's Landing", 0, 0], ["Majestea", "Spice & herb", "Eternity Isle — The Overlook and The Ruins", 0, 0], ["Paprika", "Spice & herb", "Eternity Isle — Glittering Dunes", 0, 0], ["Ambrosia", "Spice & herb", "Storybook Vale — Mythopia, from Goofy's Stall", 140, 70], ["Black Pepper", "Spice & herb", "Storybook Vale — Mythopia, seed from Goofy's Stall", 70, 83], ["Lightning Spice", "Spice & herb", "Storybook Vale — Mythopia, foraged", 0, 0], ["Nutmeg", "Spice & herb", "Storybook Vale", 0, 0], ["Salt Crystal", "Spice & herb", "Storybook Vale", 0, 0], ["Button Mushroom", "Spice & herb", "Wishblossom Mountains — Glamour Gulch", 0, 0], ["Dill", "Spice & herb", "Wishblossom Mountains — Wishing Alps", 0, 0], ["Fairy Sprinkles", "Spice & herb", "Wishblossom Mountains — Pixie Acres", 0, 0], ["Cocoa Bean", "Sweet", "Glade of Trust — from trees", 0, 0], ["Sugarcane", "Sweet", "Dazzle Beach — grown from seed", 19, 46], ["Blue Marshmallow", "Sweet", "Dreamlight Valley", 0, 0], ["Pink Marshmallow", "Sweet", "Dreamlight Valley", 0, 0], ["Honey Coral", "Seafood", "Wishblossom Mountains — Pixie Acres, caught while fishing", 0, 0], ["Sweet Jelly", "Sweet", "Honeyglow Woods", 0, 0], ["Truffle", "Sweet", "Honeyglow Woods", 0, 0], ["Apple", "Fruit", "Plaza and Forgotten Lands — trees, regrow ~20 min", 25, 0], ["Banana", "Fruit", "Plaza, Peaceful Meadow and Dazzle Beach — trees, ~23 min", 29, 0], ["Blueberry", "Fruit", "Dazzle Beach and Forest of Valor — bushes, ~23 min", 29, 0], ["Cherry", "Fruit", "Frosted Heights and Sunlit Plateau — trees, ~33 min", 42, 0], ["Coconut", "Fruit", "Dazzle Beach — trees, ~30 min", 42, 0], ["Coffee Bean", "Fruit", "Glade of Trust — bushes, ~40 min", 36, 0], ["Cosmic Fig", "Fruit", "Eternity Isle — Ancient's Landing", 0, 0], ["Grapes", "Fruit", "Eternity Isle — Ancient's Landing", 0, 0], ["Melon", "Fruit", "Eternity Isle — Glittering Dunes", 0, 0], ["Pineapple", "Fruit", "Eternity Isle — Wild Tangle", 0, 0], ["Clam", "Seafood", "Dazzle Beach — foraged on the sand", 0, 0], ["Oyster", "Seafood", "Dazzle Beach — foraged on the sand", 0, 0], ["Scallop", "Seafood", "Dazzle Beach — foraged on the sand", 0, 0], ["Seaweed", "Seafood", "Caught while fishing", 0, 0], ["Butter", "Pantry", "Chez Remy's pantry", 0, 0], ["Cheese", "Pantry", "Chez Remy's pantry", 0, 0], ["Egg", "Pantry", "Chez Remy's pantry", 0, 0], ["Milk", "Pantry", "Chez Remy's pantry", 0, 0], ["Peanut", "Pantry", "Chez Remy's pantry — unlocked through Remy's quests", 0, 0], ["Slush Ice", "Pantry", "Chez Remy's pantry — unlocked through Remy's quests", 0, 0], ["Pork", "Protein", "Gaston's Stall — after his level 2 friendship quest", 0, 0], ["Poultry", "Protein", "Gaston's Stall — after his level 2 friendship quest", 500, 0], ["Venison", "Protein", "Gaston's Stall — after his level 2 friendship quest", 0, 0], ["Bamboo", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Cabbage", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Turnip", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Ruby Lentils", "Vegetable", "Eternity Isle — Wild Tangle, grows wild", 0, 0], ["Beans", "Vegetable", "Eternity Isle — Glittering Dunes", 0, 0], ["Broccoli", "Vegetable", "Eternity Isle — Glittering Dunes", 0, 0], ["Flute Root", "Vegetable", "Eternity Isle — Glittering Dunes", 0, 0], ["Celery", "Vegetable", "Eternity Isle — Ancient's Landing", 0, 0], ["Yam", "Vegetable", "Eternity Isle — Ancient's Landing", 0, 0], ["Cape Gooseberry", "Fruit", "Storybook Vale — on the ground anywhere in The Bind; respawns shortly after picking", 55, 130], ["Gooseberry", "Fruit", "Bushes in Frosted Heights (2) and Forgotten Lands (4), 3 per harvest every 40 min — bushes can be moved to any biome", 50, 600], ["Lemon", "Fruit", "Forest of Valor and Glade of Trust", 33, 400], ["Raspberry", "Fruit", "Plaza and Peaceful Meadow", 21, 250], ["Almonds", "Fruit", "Eternity Isle — Wild Tangle, regrows every 50 min", 42, 500], ["Bonsai Starfruit", "Fruit", "Wishblossom Mountains", 40, 450], ["Cactoberry", "Fruit", "Eternity Isle, regrows every 45 min", 34, 400], ["Dark Chocolate Coffee Beans", "Fruit", "Wishblossom Mountains, regrows every 30 min", 66, 33], ["Dates", "Fruit", "Eternity Isle — Glittering Dunes, regrows every 55 min", 29, 350], ["Dreamango", "Fruit", "Eternity Isle", 50, 600], ["Dreamlight Fruit", "Fruit", "Sunlit Plateau — from Simba's quest Seed of Memories (level 7); more spots after his level-10 quest", 40, 500], ["Festive Cocoa Bean", "Fruit", "Festive event only", 50, 0], ["Juniper Berry", "Fruit", "Honeyglow Woods — Braveheart Grove and Gloommeadow, regrows every 25 min", 25, 300], ["Lollipop Fruit", "Fruit", "Wishblossom Mountains, regrows every 40 min", 115, 73], ["Nestling Pear", "Fruit", "Eternity Isle, regrows every 35 min", 25, 300], ["Persimmon", "Fruit", "Storybook Vale, regrows every 25 min", 25, 300], ["Pincushion Peach", "Fruit", "Wishblossom Mountains", 38, 400], ["Pufflebud Pods", "Fruit", "Honeyglow Woods, regrows every 40 min", 80, 24], ["Red Currants", "Fruit", "Wishblossom Mountains", 33, 350], ["Sea Grapes", "Fruit", "Storybook Vale", 20, 25], ["Sour Berries", "Fruit", "Storybook Vale — The Bind, regrows every 30 min", 40, 400], ["Spiral Strawberry", "Fruit", "Storybook Vale, regrows every 40 min", 50, 500], ["Strawberry", "Fruit", "Eternity Isle, regrows every 30 min", 23, 275], ["Sweet Chestnuts", "Fruit", "Honeyglow Woods, regrows every 30 min", 48, 400], ["Beetroot", "Vegetable", "Wishblossom Mountains", 0, 0], ["Brussels Sprouts", "Vegetable", "Storybook Vale — Everafter, from bushes", 30, 0], ["Porcini Mushroom", "Vegetable", "Storybook Vale — Everafter, on the ground; respawns shortly after picking", 55, 0], ["Olives", "Protein", "Storybook Vale — Mythopia, from olive trees every 30 min", 0, 0], ["Golden Pattypan", "Vegetable", "Honeyglow Woods — Drowsybloom Acre", 0, 0], ["Golden Honey", "Sweet", "Honeyglow Woods", 0, 0], ["Fairy Kamut", "Grain", "Wishblossom Mountains", 0, 0], ["Scarlet Kale", "Vegetable", "Wishblossom Mountains — exact biome not confirmed", 0, 0], ["Pearly Barley", "Grain", "Wishblossom Mountains — exact biome not confirmed", 0, 0], ["Parsnip", "Vegetable", "Honeyglow Woods — exact biome not confirmed", 0, 0], ["Tree Resin", "Other", "Honeyglow Woods — exact biome not confirmed", 0, 0], ["Fog Dust", "Other", "Honeyglow Woods — used in the main-story potions; exact source not confirmed", 0, 0], ["Acorn Snail", "Seafood", "Honeyglow Woods — caught while fishing", 0, 0], ["Trumpet Snail", "Seafood", "Storybook Vale — exact biome not confirmed", 0, 0], ["Egg-cellent Fruit", "Event", "Spring event only", 0, 0], ["Spring V-EGG-etable", "Event", "Spring event only", 0, 0], ["Wild Spring Egg", "Event", "Spring event only", 0, 0]];
 
 /* Favourite-gift pools, per character (Dreamlight Valley Wiki) */
 const GIFTS={
@@ -822,6 +763,13 @@ const FLOWERS=[["Black Passion Lily", ["black"], ["Frosted Heights"], 79], ["Blu
 
 /* Crafting materials: [name, where, sell, note] */
 const MATERIALS=[["Softwood", "Plaza · Peaceful Meadow · Forest of Valor · Glade of Trust — on the ground near trees", 5, "Also from digging small and large tree stumps · Kristoff's Stall sells it"], ["Hardwood", "Forest of Valor · Glade of Trust · Sunlit Plateau · Frosted Heights", 10, "Also from digging large tree stumps · Kristoff's Stall sells it"], ["Dry Wood", "Sunlit Plateau · Frosted Heights · Forgotten Lands", 25, "Kristoff's Stall sells it"], ["Dark Wood", "Forgotten Lands only", 50, ""], ["Tropical Wood", "Eternity Isle — Wild Tangle", 0, ""], ["Petrified Wood", "Storybook Vale — The Bind and Everafter", 0, ""], ["Clay", "Digging in Glade of Trust · Sunlit Plateau · Forgotten Lands", 20, "Kristoff's Stall sells it"], ["Sand", "Digging on Dazzle Beach · clearing sea debris", 8, "Kristoff's Stall sells it"], ["Pebbles", "Digging in Dazzle Beach · Forest of Valor · Sunlit Plateau · Forgotten Lands", 10, "Kristoff's Stall sells it"], ["Snowball", "Digging in Frosted Heights · clearing ice blocks", 25, "Kristoff's Stall sells it — the only way to get it before Frosted Heights"], ["Soil", "Digging in any Valley biome", 3, ""], ["Rich Soil", "Harvesting crops", 25, ""], ["Stone", "Mining in every biome", 2, "Kristoff's Stall sells it"], ["Coal Ore", "Mining in every biome", 5, "You need 1 for every meal you cook"], ["Red Algae", "Fishing, in any biome", 150, "Crafts into Seaweed"], ["Dream Shard", "Digging sparkling holes · feeding critters · removing Night Thorns", 0, ""], ["Night Shard", "Digging sparkling holes at night", 0, "Also crafted from Onyx"], ["Blue Button", "Fishing in Peaceful Meadow and Dazzle Beach", 50, ""], ["Red Button", "On the ground near villagers' houses", 50, ""], ["Purple Button", "Crafted", 50, ""], ["Copper", "Eternity Isle — everywhere", 0, ""], ["Tin", "Eternity Isle — The Plains · The Borderlands · The Wastes · The Oasis", 0, ""], ["Amber", "Eternity Isle — The Grasslands · The Promenade · The Grove · The Lagoon", 0, ""], ["Bones", "Eternity Isle — The Plains · The Borderlands · The Wastes · The Oasis", 0, ""]];
+
+/* Goofy's Stalls: [stall, app areas, [[stage, cost, [[item, price]]]], [[rotating, price]]] — Dreamlight Valley Wiki, Sep 2026 */
+const STALLS=[["Peaceful Meadow", ["Peaceful Meadow"], [["Initial repair", "free", [["Lettuce Seed", 3]]], ["Upgrade 1", "800", [["Wheat Seed", 1]]], ["Upgrade 2", "1,000", [["Carrot Seed", 10]]]], [["Apple", 50], ["Carrot", 66], ["Lettuce", 12], ["Raspberry", 42], ["Wheat", 3]]], ["Dazzle Beach", ["Dazzle Beach"], [["Initial repair", "1,000", [["Sugarcane Seed", 5]]], ["Upgrade 1", "2,000", [["Tomato Seed", 8]]], ["Upgrade 2", "3,000", [["Corn Seed", 15]]]], [["Banana", 58], ["Corn", 24], ["Sugarcane", 29], ["Tomato", 33]]], ["Forest of Valor", ["Forest of Valor"], [["Initial repair", "1,500", [["Bell Pepper Seed", 12]]], ["Upgrade 1", "3,500", [["Canola Seed", 25]]], ["Upgrade 2", "7,500", [["Onion Seed", 50]]]], [["Bell Pepper", 50], ["Blueberry", 58], ["Canola", 164], ["Onion", 255]]], ["Glade of Trust", ["Glade of Trust"], [["Initial repair", "2,000", [["Rice Seed", 35]]], ["Upgrade 1", "5,000", [["Spinach Seed", 45]]], ["Upgrade 2", "10,000", [["Okra Seed", 135]]]], [["Lemon", 67], ["Okra", 171], ["Rice", 92], ["Spinach", 62]]], ["Sunlit Plateau", ["Sunlit Plateau"], [["Initial repair", "3,000", [["Chili Pepper Seed", 20], ["Cotton Seed", 42]]], ["Upgrade 1", "7,500", [["Zucchini Seed", 30]]], ["Upgrade 2", "15,000", [["Soya Seed", 60]]]], [["Chili Pepper", 117], ["Cocoa Bean", 75], ["Soya", 104], ["Zucchini", 78]]], ["Frosted Heights", ["Frosted Heights"], [["Initial repair", "4,000", [["Cucumber Seed", 40]]], ["Upgrade 1", "10,000", [["Eggplant Seed", 95]]], ["Upgrade 2", "20,000", [["Asparagus Seed", 150]]]], [["Asparagus", 200], ["Cherry", 83], ["Cucumber", 239], ["Eggplant", 462]]], ["Forgotten Lands", ["Forgotten Lands"], [["Initial repair", "5,000", [["Pumpkin Seed", 275]]], ["Upgrade 1", "12,500", [["Potato Seed", 55]]], ["Upgrade 2", "25,000", [["Leek Seed", 120]]]], [["Gooseberry", 100], ["Leek", 464], ["Potato", 189], ["Pumpkin", 996]]], ["The Bind", ["The Bind"], [["Initial repair", "—", [["Chia Seed", 5], ["Cauliflower Seed", 10]]], ["Upgrade 1", "3,000", [["Barley Seed", 15], ["Ring Squash Seed", 20]]], ["Upgrade 2", "6,000", [["Shovel Bird Eggs", 160], ["Flyleaf Feta", 150]]]], []], ["Everafter", ["The Wild Woods", "Teapot Falls", "The Fallen Fortress", "The Beanstalk Marshes"], [["Initial repair", "3,000", [["Radish Seed", 100], ["Oat Seed", 150]]], ["Upgrade 1", "6,000", [["Rhubarb Seed", 200], ["Green Bean Seed", 250]]], ["Upgrade 2", "12,000", [["Plain Yogurt", 240], ["Faerie Rye Seed", 60]]]], []], ["Mythopia", ["The Elysian Fields", "The Fiery Plains", "The Statue's Shadow", "Mount Olympus"], [["Initial repair", "3,000", [["Honeydew Seed", 40], ["Radicchio Seed", 50]]], ["Upgrade 1", "6,000", [["Elysian Grain", 260], ["Black Pepper Seed", 70]]], ["Upgrade 2", "12,000", [["Ambrosia", 140], ["Golden Apple", 220]]]], []], ["Ancient's Landing (Eternity Isle)", [], [["Initial repair", "12 Plastic Scrap + 25 Copper, quest Give Me a Sign", [["Wheat Seed", 1], ["Celery Seed", 20]]], ["Upgrade 1", "2,000", [["Canola Seed", 25], ["Grape Seed", 5]]], ["Upgrade 2", "3,000", [["Yam Seed", 15], ["Cosmic Fig Seed", 10]]]], []], ["Glittering Dunes (Eternity Isle)", [], [["Initial repair", "4,000", [["Corn Seed", 15], ["Broccoli Seed", 60]]], ["Upgrade 1", "8,000", [["Chili Pepper Seed", 20], ["Melon Seed", 40]]], ["Upgrade 2", "12,000", [["Bean Seed", 50], ["Flute Root Seed", 70]]]], []], ["Wild Tangle (Eternity Isle)", [], [["Initial repair", "4,000", [["Tomato Seed", 8], ["Cabbage Seed", 150]]], ["Upgrade 1", "8,000", [["Turnip Seed", 100], ["Pineapple Seed", 200]]], ["Upgrade 2", "12,000", [["Potato Seed", 55], ["Ruby Lentil Seed", 250]]]], []]];
+const SHOPS=[["Chez Remy's pantry", "Plaza — Remy's restaurant", "Butter 190 · Cheese 180 · Egg 220 · Milk 230 · Peanut 200 · Slush Ice 150", "Peanut unlocks with Remy's level-4 quest Remy's Recipe Book; Slush Ice with his level-10 quest The Unknown Flavor"], ["Kristoff's Stall", "Dreamlight Valley", "Softwood 5 · Stone 2 · Sand 8 · Coal Ore 5 · Brick 130 · Glass 50 · Snowball 25 · Fiber 6", "A second row with rotating materials (Hardwood, Dry Wood, Clay, Pebbles…) opens with Kristoff's level-10 quest A Broken Sled"], ["Mulan's Tea Stall", "Dreamlight Valley", "Chrysanthemum, Jasmine and Oolong Tea Leaves — 3 free a day", ""]];
+
+/* nomes alternativos usados em receitas */
+const APELIDOS={'Oat':'oats','Chia':'chia seeds','Green Bean':'green beans','Cosmic Fig':'cosmic figs','Shovelbird Egg':'shovel bird eggs','Yogurt':'plain yogurt','Spiral Strawberry':'spiral strawberries','Porcini Mushroom':'porcini mushrooms','Brussels Sprouts':'brussels sprout','Sweet Chestnuts':'sweet chestnut','Cactoberry':'cactoberries','Bonsai Starfruit':'bonsai star fruit','Olives':'olive','Almonds':'almond'};
 
 const CHAVE='my-valley-ddv-en-1';
 let E={areas:{},pers:{}};
@@ -1057,7 +1005,7 @@ function verAreas(){
     }).join('')+`</div>`;
   }).join('');
   el.querySelectorAll('.area').forEach(b=>b.onclick=()=>{
-    E.areas[b.dataset.k]=E.areas[b.dataset.k]?0:1; salvar(); verAreas();
+    E.areas[b.dataset.k]=E.areas[b.dataset.k]?0:1; salvar(); verAreas(); montarIndice(); pendurarCompras(); verGuia();
   });
 }
 
@@ -1236,7 +1184,7 @@ function montarIndice(){
             ['Yield',yld?yld+' per harvest':null],
             ['Sells',sell?coin(sell)+' coins':null],
             ['Energy',en?'+'+coin(en):null]],
-      val:{sell:sell,energy:en,cost:cost},s:(n+' '+where+' '+label+' seed crop plant').toLowerCase()});
+      val:{sell:sell,energy:en,cost:cost},s:(n+' '+(APELIDOS[n]||'')+' '+where+' '+label+' seed crop plant').toLowerCase()});
   });
   RECIPES.forEach(([n,reg,course,ing,sell,en,st])=>INDEX.push({
     t:'recipe',n,sub:course+' · '+reg,ing,
@@ -1246,7 +1194,7 @@ function montarIndice(){
   ITEMS.forEach(([n,cat,where,sell,en])=>INDEX.push({
     t:'item',n,sub:cat,
     meta:[['Where',where],['Sells',sell?coin(sell)+' coins':null],['Energy',en?'+'+coin(en):null]],
-    val:{sell:sell,energy:en},s:(n+' '+cat+' '+where+' ingredient').toLowerCase()}));
+    val:{sell:sell,energy:en},s:(n+' '+(APELIDOS[n]||'')+' '+cat+' '+where+' ingredient').toLowerCase()}));
   CHARS.forEach(c=>{ if(!GIFTS[c.id]) return;
     INDEX.push({t:'gift',n:c.n+' — favourite gifts',sub:'Gift pool',ing:GIFTS[c.id],
       meta:[['Rotates','3 random picks from this pool each day']],
@@ -1278,6 +1226,31 @@ function montarIndice(){
     meta:[['Where',onde],['Sells',sell?coin(sell)+' coins':null],['Note',note||null]],
     val:{sell:sell},
     s:(n+' '+onde+' '+note+' material crafting').toLowerCase()}));
+  // lojas
+  const A_SEMENTE={'shovel bird eggs':'shovelbird egg','plain yogurt':'yogurt','honeydew':'honeydew melon',
+    'ruby lentil':'ruby lentils','bean':'beans','grape':'grapes','chia':'chia'};
+  const COMPRA={};
+  const anota=(nome,txt)=>{ const k=nome.toLowerCase(); (COMPRA[k]=COMPRA[k]||[]).push(txt); };
+  STALLS.forEach(([loja,areas,etapas,rot])=>{
+    const aberto = areas.length ? areas.some(a=>temArea(a)) : null;
+    const aviso = aberto===false ? ' \u2014 biome still locked' : '';
+    etapas.forEach(([etapa,custo,itens])=>itens.forEach(([it,preco])=>{
+      const quando = etapa==='Initial repair' ? 'as soon as the stall is open' : 'after '+etapa+' ('+custo+' coins)';
+      let nome=it.toLowerCase(), eSemente=/ seed$/.test(nome);
+      if(eSemente) nome=nome.replace(/ seed$/,'');
+      nome=A_SEMENTE[nome]||nome;
+      anota(nome, (eSemente?'seed ':'')+coin(preco)+' coins at Goofy\'s Stall, '+loja+', '+quando+aviso);
+    }));
+    rot.forEach(([it,preco])=>anota(it, coin(preco)+' coins at Goofy\'s Stall, '+loja+' \u2014 in the daily rotation, not every day, max 10'+aviso));
+    INDEX.push({t:'shop',n:'Goofy\'s Stall \u2014 '+loja,sub:'Shop',
+      ing:etapas.map(([e,c,its])=>e+(c&&c!=='free'&&c!=='\u2014'?' ('+c+')':'')+': '+its.map(([x,pr])=>x+' '+pr).join(', ')).join(' \u00b7 ')
+          +(rot.length?' \u00b7 Rotating: '+rot.map(([x,pr])=>x+' '+pr).join(', '):''),
+      meta:[['Open for you', aberto===null?null:(aberto?'yes \u2014 you have this biome':'not yet \u2014 biome still locked')]],
+      s:('goofy stall shop buy '+loja+' '+etapas.map(e=>e[2].map(x=>x[0]).join(' ')).join(' ')+' '+rot.map(x=>x[0]).join(' ')).toLowerCase()});
+  });
+  window.__COMPRA=COMPRA;
+  SHOPS.forEach(([n,onde,itens,nota])=>INDEX.push({t:'shop',n,sub:'Shop',ing:itens,
+    meta:[['Where',onde],['Note',nota||null]],s:(n+' '+onde+' '+itens+' '+nota+' shop buy').toLowerCase()}));
   CRAFT.forEach(([n,cat,rec,note])=>INDEX.push({
     t:'craft',n,sub:cat,ing:rec,
     meta:[['Note',note||null]],
@@ -1309,8 +1282,18 @@ function montarIndice(){
 }
 
 let termoG='', tipoG='all';
-const TIPOS=[['all','Everything'],['gift','Gifts'],['flower','Flowers'],['critter','Critters'],['material','Materials'],['gem','Ores & gems'],['craft','Crafting'],['questrec','Quest recipes'],['tip','Tips'],['item','Ingredients'],['fish','Fish'],['crop','Seeds & crops'],['recipe','Recipes'],['quest','Quests']];
+const TIPOS=[['all','Everything'],['gift','Gifts'],['flower','Flowers'],['critter','Critters'],['material','Materials'],['shop','Shops'],['gem','Ores & gems'],['craft','Crafting'],['questrec','Quest recipes'],['tip','Tips'],['item','Ingredients'],['fish','Fish'],['crop','Seeds & crops'],['recipe','Recipes'],['quest','Quests']];
 
+function pendurarCompras(){
+  const C=window.__COMPRA; if(!C) return;
+  INDEX.forEach(i=>{
+    if(['crop','item','material','fish'].indexOf(i.t)<0) return;
+    const k=i.n.toLowerCase(); if(!C[k]) return;
+    if(i.meta.some(m=>m[0]==='Buy at')) return;
+    i.meta.push(['Buy at', C[k].join(' \u00b7 ')]);
+    i.s+=' goofy stall buy';
+  });
+}
 function verFiltrosG(){
   document.getElementById('filtrosG').innerHTML=TIPOS.map(([k,r])=>
     `<button class="chip" data-t="${k}" aria-pressed="${tipoG===k}">${r}</button>`).join('');
@@ -1516,7 +1499,7 @@ async function perguntar(){
   btn.disabled=false; btn.textContent='Ask Claude about this';
 }
 
-function verTudo(){ try{ document.getElementById('ordem').value=(E.ui&&E.ui.ordem)||'jogo'; }catch(e){} pintaToggle(); montarIndice(); verAreas(); verFiltros(); verPers(); verMiss(); verFiltrosG(); verGuia(); verProg(); }
+function verTudo(){ montarIndice(); pendurarCompras(); try{ document.getElementById('ordem').value=(E.ui&&E.ui.ordem)||'jogo'; }catch(e){} pintaToggle(); verAreas(); verFiltros(); verPers(); verMiss(); verFiltrosG(); verGuia(); verProg(); }
 document.querySelectorAll('.aba').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.aba').forEach(x=>x.setAttribute('aria-selected',x===b));
   ['areas','pers','miss','guia','prog'].forEach(v=>
