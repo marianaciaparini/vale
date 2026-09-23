@@ -211,7 +211,8 @@ select{font:inherit;font-size:12.5px;padding:6px 10px;border-radius:20px;
   <div class="abas" role="tablist">
     <button class="aba" role="tab" data-v="areas" aria-selected="true">Map</button>
     <button class="aba" role="tab" data-v="pers" aria-selected="false">Characters</button>
-    <button class="aba" role="tab" data-v="miss" aria-selected="false">Stuck</button>
+    <button class="aba" role="tab" data-v="miss" aria-selected="false">Quests</button>
+    <button class="aba" role="tab" data-v="comp" aria-selected="false">Companions</button>
     <button class="aba" role="tab" data-v="guia" aria-selected="false">Guide</button>
     <button class="aba" role="tab" data-v="prog" aria-selected="false">Progress</button>
   </div>
@@ -233,6 +234,7 @@ select{font:inherit;font-size:12.5px;padding:6px 10px;border-radius:20px;
     <div id="lista-pers"></div>
   </section>
   <section id="v-miss" class="oculto"></section>
+  <section id="v-comp" class="oculto"></section>
   <section id="v-guia" class="oculto">
     <input class="busca" id="buscaG" placeholder="Search anything — fish, seed, recipe, quest, biome" autocomplete="off">
     <div class="filtros" id="filtrosG"></div>
@@ -771,6 +773,9 @@ const SHOPS=[["Chez Remy's pantry", "Plaza — Remy's restaurant", "Butter 190 �
 /* nomes alternativos usados em receitas */
 const APELIDOS={'Oat':'oats','Chia':'chia seeds','Green Bean':'green beans','Cosmic Fig':'cosmic figs','Shovelbird Egg':'shovel bird eggs','Yogurt':'plain yogurt','Spiral Strawberry':'spiral strawberries','Porcini Mushroom':'porcini mushrooms','Brussels Sprouts':'brussels sprout','Sweet Chestnuts':'sweet chestnut','Cactoberry':'cactoberries','Bonsai Starfruit':'bonsai star fruit','Olives':'olive','Almonds':'almond'};
 
+/* Companions: [species, world, where, favourite, also likes, taming, variants] */
+const COMP=[["Squirrels", "Dreamlight Valley", "Plaza", "Peanut — Chez Remy's pantry", "Any fruit", "Walk up slowly and feed. About 2 feedings — the easiest critter in the game.", [["Classic", "Plaza", "Mon, Thu, Sat all day · Sun noon–midnight"], ["Red", "Plaza", "Mon, Wed, Fri all day · Sun midnight–noon"], ["Black", "Plaza", "Tue, Thu, Fri all day · Sun midnight–noon"], ["Gray", "Plaza", "Tue, Wed, Sat all day · Sun noon–midnight"], ["White", "Plaza", "Sunday, all day"]]], ["Rabbits", "Dreamlight Valley", "Peaceful Meadow", "Carrot — Goofy's Stall", "Any vegetable, grain, fruit or spice", "Approach, let them run, approach again. On the third run they stop and let you feed.", [["Classic", "Peaceful Meadow", "Mon, Thu, Sat all day · Sun noon–midnight"], ["Black", "Peaceful Meadow", "Mon, Wed, Fri all day · Sun midnight–noon"], ["Brown", "Peaceful Meadow", "Tue, Wed, Sat all day · Sun noon–midnight"], ["White", "Peaceful Meadow", "Tue, Thu, Fri all day · Sun midnight–noon"], ["Calico", "Peaceful Meadow", "Thursday, all day"]]], ["Sea Turtles", "Dreamlight Valley", "Dazzle Beach", "Seaweed", "Any seafood — clams, oysters, scallops", "Approach slowly. About 3 feedings.", [["Classic", "Dazzle Beach", ""], ["Brown", "Dazzle Beach", ""], ["White", "Dazzle Beach", ""], ["Purple", "Dazzle Beach", ""], ["Black", "Dazzle Beach", "Monday 10am–4pm only"]]], ["Raccoons", "Dreamlight Valley", "Forest of Valor", "Blueberry", "Raspberry, gooseberry, strawberry", "Red light, green light — move while the head is down, freeze when it lifts.", [["Classic", "Forest of Valor", "Mon, Thu, Sat all day · Sun noon–midnight"], ["Black", "Forest of Valor", "Tue, Wed, Sat all day · Sun noon–midnight"], ["Red", "Forest of Valor", "Mon, Wed, Fri all day · Sun midnight–noon"], ["Blue", "Forest of Valor", "Wednesday 4pm–10pm only"], ["White", "Forest of Valor", "Sunday"]]], ["Crocodiles", "Dreamlight Valley", "Glade of Trust", "Lobster", "Any fish or seafood from the Glade of Trust", "Red light, green light — until they lie down on their belly.", [["Classic", "Glade of Trust", ""], ["Blue", "Glade of Trust", ""], ["Red", "Glade of Trust", ""], ["Golden", "Glade of Trust", ""], ["Pink", "Glade of Trust", ""], ["White", "Glade of Trust", ""]]], ["Sunbirds", "Dreamlight Valley", "Sunlit Plateau", "Each one wants flowers in its own two colours", "Any flower", "Just walk up and feed them.", [["Emerald", "Sunlit Plateau", "Green and yellow flowers, e.g. Green Passion Lily · Tue, Wed, Sat all day · Sun noon–midnight"], ["Golden", "Sunlit Plateau", "Yellow and orange, e.g. Sunflower · Tue, Thu, Fri all day · Sun midnight–noon"], ["Orchid", "Sunlit Plateau", "Pink and purple, e.g. Orange Houseleek · Friday 9am–3pm only"], ["Red", "Sunlit Plateau", "Blue and red, e.g. Red Bromeliad · Mon, Thu, Sat all day · Sun noon–midnight"], ["Turquoise", "Sunlit Plateau", "Green and pink, e.g. Pink Houseleek · Mon, Wed, Fri all day · Sun midnight–noon"]]], ["Foxes", "Dreamlight Valley", "Frosted Heights", "White Sturgeon", "Any fish or seafood from Frosted Heights — salmon, crab", "Tag — once you have their attention, chase until they stop.", [["Classic", "Frosted Heights", ""], ["White", "Frosted Heights", ""], ["Black", "Frosted Heights", ""], ["Blue", "Frosted Heights", ""], ["Red", "Frosted Heights", ""]]], ["Ravens", "Dreamlight Valley", "Forgotten Lands", "Any 5-star meal", "Any 4-star or 3-star meal", "Approach slowly. The most expensive to tame — every feeding costs a 5-star dish.", [["Classic", "Forgotten Lands", ""], ["Blue", "Forgotten Lands", ""], ["Brown", "Forgotten Lands", ""], ["Red", "Forgotten Lands", ""], ["White", "Forgotten Lands", ""]]], ["Monkeys", "Eternity Isle", "Ancient's Landing", "Banana Split", "3-, 4- and 5-star meals", "", [["Classic", "Ancient's Landing", ""], ["Beige", "Ancient's Landing", ""], ["Black and Brown", "Ancient's Landing", ""], ["Black and Gray", "Ancient's Landing", ""], ["Toon", "Ancient's Landing", ""]]], ["Cobras", "Eternity Isle", "Glittering Dunes", "Egg", "Scorpion", "", [["Classic", "Glittering Dunes", ""], ["Blue and Red Striped", "Glittering Dunes", ""], ["Green and White Striped", "Glittering Dunes", ""], ["Pink Spotted", "Glittering Dunes", ""], ["Yellow and Purple Striped", "Glittering Dunes", ""], ["Toon", "Glittering Dunes", ""]]], ["Capybaras", "Eternity Isle", "Wild Tangle", "Cabbage", "Grains, spices, herbs, vegetables or fruit grown from seeds", "Players also report Cinnamon and Bamboo working.", [["Classic", "Wild Tangle", ""], ["Blue Striped", "Wild Tangle", ""], ["Black and White", "The Promenade", "Tue and Thu all day · Fri–Sun noon–midnight"], ["Gray Spotted", "Wild Tangle", ""], ["Red and White Striped", "Wild Tangle", ""], ["Toon", "Wild Tangle", ""]]], ["Owls", "Storybook Vale", "The Library of Lore and The Bind", "Barley — grow it from seed in The Bind", "Any grain, rice included", "", [["Brown", "The Library of Lore", "Mon–Fri, all day"], ["Dark", "The Library of Lore", "Sat–Sun, all day"], ["Purple", "The Bind", "Midnight–9am, every day"], ["White", "The Bind", "3pm–8pm, every day"]]], ["Baby Dragons", "Storybook Vale", "Everafter", "Magma or Pure Ice", "Any gem", "Magma is mined in Mythopia; Pure Ice in Everafter — both in areas you can reach.", [["Blue", "The Wild Woods", ""], ["Red", "Teapot Falls", ""], ["Green", "The Fallen Fortress", ""], ["Purple", "The Beanstalk Marshes", ""], ["Teal", "Everafter", ""]]], ["Pegasi", "Storybook Vale", "Mythopia", "A 4- or 5-star vegetable meal", "A vegetable meal of 3 stars or less", "Tag — they run like rabbits; catch them, then feed.", [["Pink", "The Elysian Fields", "Thu–Sun, all day"], ["Black", "The Elysian Fields", "Wed–Sun, all day"], ["Blue", "The Fiery Plains", "Mon–Wed, all day"], ["Yellow", "The Statue's Shadow", "Tue–Sat 6pm–midnight"], ["Peach", "Mount Olympus", "6am–2pm, every day"]]], ["Skunks", "Wishblossom Mountains", "Wishblossom Ranch", "", "", "", [["Classic", "Runway River", "Midnight–noon, every day"], ["Brown", "Paisley Park", "Noon–midnight, Sun/Mon/Wed/Fri"], ["Patterned", "Haute Plateau", "All day, every day"], ["White", "Modish Marsh", "Noon–midnight, Sun/Tue/Thu/Sat"]]], ["Geese", "Honeyglow Woods", "Honeyglow Woods", "", "", "", [["Classic", "Honeyglow Woods", ""], ["Black", "Honeyglow Woods", ""], ["Blue", "Honeyglow Woods", ""], ["Golden", "Honeyglow Woods", ""], ["True North", "Honeyglow Woods", ""]]], ["Sweet Bees", "Honeyglow Woods", "Honeyglow Woods", "", "", "", [["Classic", "Honeyglow Woods", ""], ["Blue", "Honeyglow Woods", ""], ["Pink", "Honeyglow Woods", ""], ["White", "Honeyglow Woods", ""]]]];
+
 const CHAVE='my-valley-ddv-en-1';
 let E={areas:{},pers:{}};
 
@@ -778,7 +783,7 @@ let E={areas:{},pers:{}};
    carregar() e' quem le o aparelho — nunca chame carregar() depois de
    trocar E por um backup, senao o estado antigo volta por cima. */
 function completar(){
-  if(!E.areas) E.areas={}; if(!E.pers) E.pers={}; if(!E.ui) E.ui={};
+  if(!E.areas) E.areas={}; if(!E.pers) E.pers={}; if(!E.ui) E.ui={}; if(!E.comp) E.comp={};
   AREAS.forEach(g=>g.itens.forEach(a=>{
     const k=g.g+'|'+a.n;
     if(E.areas[k]===undefined) E.areas[k]=a.on;
@@ -1166,6 +1171,82 @@ function verMiss(){
   });
 }
 
+/* ---------- companions ---------- */
+function temArea(nome){
+  const k=Object.keys(E.areas||{}).find(x=>x.endsWith('|'+nome));
+  return k===undefined ? null : !!E.areas[k];
+}
+const MUNDOS=['Dreamlight Valley','Eternity Isle','Storybook Vale','Wishblossom Mountains','Honeyglow Woods'];
+let compAberto=null;
+function chaveComp(esp,v){ return esp+'|'+v; }
+function totalComp(){
+  let t=0,f=0;
+  COMP.forEach(([esp,,,,,,vars])=>{
+    const lista = vars.length?vars.map(v=>v[0]):['—'];
+    lista.forEach(v=>{ t++; if(E.comp[chaveComp(esp,v)]) f++; });
+  });
+  return [f,t];
+}
+function verComp(){
+  const el=document.getElementById('v-comp');
+  const [feitos,tudo]=totalComp();
+  let h=`<div class="caixa"><div class="numeros">
+      <div><b>${feitos}/${tudo}</b><span>companions tamed</span></div>
+      <div><b>${COMP.filter(c=>temArea(c[2])===true||c[6].some(v=>temArea(v[1])===true)).length}</b><span>species you can reach</span></div>
+      <div><b>${COMP.length}</b><span>species in the game</span></div>
+    </div><p class="nota" style="margin-top:10px">Green means the biome is open on your map; dimmed means you cannot get there yet. Tap a species to open it, then tap a colour to mark it as tamed. A critter only becomes your companion after you feed it enough times — usually twice with the favourite food. The colours here match the ones Olaf's Grand Exhibition asks for \u2014 the favourite food counts double.</p></div>`;
+  let mundoAtual='';
+  COMP.forEach(([esp,mundo,onde,fav,gosta,como,vars])=>{
+    if(mundo!==mundoAtual){ mundoAtual=mundo; h+=`<h2 class="secao">${esc(mundo)}</h2>`; }
+    const lista = vars.length?vars:[['—',onde,'']];
+    const ok = lista.filter(v=>E.comp[chaveComp(esp,v[0])]).length;
+    const estados = [temArea(onde)].concat(vars.map(v=>temArea(v[1])));
+    const podeIr = estados.some(x=>x===true);
+    const trancado = !podeIr && estados.some(x=>x===false);
+    const selo = podeIr
+      ? '<span class="tag" style="background:rgba(95,208,138,.22);color:#a9f0c4">you can go here</span>'
+      : trancado
+        ? '<span class="tag" style="background:rgba(232,112,95,.22);color:#ffb9ad">biome still locked</span>'
+        : '<span class="tag">not on your map</span>';
+    const aberto = compAberto===esp;
+    h+=`<div class="caixa" style="padding:0;${podeIr
+        ? 'border-color:var(--verde);box-shadow:inset 4px 0 0 var(--verde)'
+        : 'border-color:rgba(143,156,232,.25);opacity:.62'}">
+      <div class="g-topo" data-esp="${esc(esp)}" style="cursor:pointer;padding:12px 14px;gap:8px;flex-wrap:wrap">
+        <b>${esc(esp)}</b><span class="tag critter">${esc(onde)}</span>${selo}
+        <span class="tag ${ok===lista.length?'ok':''}" style="margin-left:auto;${ok===lista.length?'background:rgba(95,208,138,.2);color:#a9f0c4':''}">${ok}/${lista.length}</span>
+      </div>
+      ${aberto?`<div style="padding:0 14px 14px;border-top:1px solid rgba(143,156,232,.25);padding-top:11px">
+      <div class="g-meta" style="margin-top:0">
+        ${fav?`Favourite: <em>${esc(fav)}</em><br>`:''}
+        ${gosta?`Also likes: <em>${esc(gosta)}</em><br>`:''}
+        ${como?`Taming: <em>${esc(como)}</em>`:''}
+        ${!fav&&!como?'<em>Favourite food not documented yet \u2014 the game shows it in the critter\'s Collection entry.</em>':''}
+      </div>
+      <div class="filtros" style="margin:10px 0 0">
+        ${lista.map(([v,vonde,quando])=>{
+          const k=chaveComp(esp,v), t=!!E.comp[k];
+          const rot = v==='—' ? 'Tamed' : v;
+          return `<button class="chip" data-comp="${esc(k)}" aria-pressed="${t}"
+            title="${esc((vonde?vonde:'')+(quando?' \u00b7 '+quando:''))}">${esc(rot)}</button>`;
+        }).join('')}
+      </div>
+      ${lista.some(v=>v[2])?`<div class="req" style="margin-top:8px">${lista.filter(v=>v[2]).map(v=>'<b>'+esc(v[0])+'</b> \u2014 '+esc(v[1]!==onde?v[1]+' \u00b7 ':'')+esc(v[2])).join('<br>')}</div>`:''}
+      </div>`:''}
+    </div>`;
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('[data-esp]').forEach(x=>x.onclick=()=>{
+    compAberto = compAberto===x.dataset.esp ? null : x.dataset.esp; verComp();
+  });
+  el.querySelectorAll('[data-comp]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    const k=b.dataset.comp;
+    if(E.comp[k]) delete E.comp[k]; else E.comp[k]=1;
+    salvar(); verComp();
+  });
+}
+
 /* ---------- unified guide ---------- */
 let INDEX=[];
 function montarIndice(){
@@ -1208,10 +1289,6 @@ function montarIndice(){
     t:'critter',n,sub:'Critter',ing:vars||null,
     meta:[['Where',bio],['Favourite',fav||null],['Also likes',liked||null],['Taming',how||null]],
     s:(n+' critter companion '+bio+' '+fav+' '+liked+' '+vars).toLowerCase()}));
-  const temArea=nome=>{
-    const k=Object.keys(E.areas||{}).find(x=>x.endsWith('|'+nome));
-    return k===undefined ? null : !!E.areas[k];
-  };
   FLOWERS.forEach(([n,cs,onde,sell])=>{
     const st=onde.map(temArea);
     const pode = st.some(x=>x===true) ? 'yes \u2014 in a biome you have'
@@ -1350,6 +1427,11 @@ function verProg(){
     <div><b>${okA}/${totA}</b><span>areas unlocked</span></div>
     <div><b>${okP}/${CHARS.length}</b><span>characters</span></div>
     <div><b>${dez}</b><span>at level 10</span></div>
+  </div></div>
+  <div class="caixa"><div class="numeros">
+    <div><b>${totalComp()[0]}/${totalComp()[1]}</b><span>companions tamed</span></div>
+    <div><b>${okQ}/${totQ}</b><span>friendship quests</span></div>
+    <div><b>${INDEX.length}</b><span>guide entries</span></div>
   </div></div>
   <div class="caixa">
     <h2 class="secao" style="margin:0 0 4px">Friendship quests<span class="conta">${okQ} of ${totQ}</span></h2>
@@ -1502,9 +1584,10 @@ async function perguntar(){
 function verTudo(){ montarIndice(); pendurarCompras(); try{ document.getElementById('ordem').value=(E.ui&&E.ui.ordem)||'jogo'; }catch(e){} pintaToggle(); verAreas(); verFiltros(); verPers(); verMiss(); verFiltrosG(); verGuia(); verProg(); }
 document.querySelectorAll('.aba').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.aba').forEach(x=>x.setAttribute('aria-selected',x===b));
-  ['areas','pers','miss','guia','prog'].forEach(v=>
+  ['areas','pers','miss','comp','guia','prog'].forEach(v=>
     document.getElementById('v-'+v).classList.toggle('oculto',v!==b.dataset.v));
   if(b.dataset.v==='miss') verMiss();
+  if(b.dataset.v==='comp') verComp();
   if(b.dataset.v==='prog') verProg();
   window.scrollTo(0,0);
 });
